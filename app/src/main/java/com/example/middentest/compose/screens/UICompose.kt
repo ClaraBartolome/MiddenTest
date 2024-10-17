@@ -1,6 +1,7 @@
 package com.example.middentest.compose.screens
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -38,7 +39,7 @@ fun UICompose(viewModel: MainViewModel) {
     //userList
 
     val userList = remember {
-        mutableListOf<UserInfo>()
+        mutableStateOf(listOf<UserInfo>())
     }
 
     val loadingState = remember {
@@ -48,8 +49,8 @@ fun UICompose(viewModel: MainViewModel) {
     //viewModel
 
     viewModel.userInfoApiResult.observe(lifecycleOwner) {
-        userList.clear()
-        userList.addAll(it.results)
+        userList.value = it.results
+        Log.v("UICOMPOSE", userList.toString())
     }
 
     viewModel.loadingState.observe(lifecycleOwner) {
@@ -76,7 +77,7 @@ fun UICompose(viewModel: MainViewModel) {
         ) {
             composable(route = MiddenTestScreens.ContactList.name) {
                 screen.value = MiddenTestScreens.ContactList
-                ContactList { navController.navigate(MiddenTestScreens.UserProfile.name) }
+                ContactList(userList.value) { navController.navigate(MiddenTestScreens.UserProfile.name) }
             }
             composable(route = MiddenTestScreens.UserProfile.name) {
                 screen.value = MiddenTestScreens.UserProfile

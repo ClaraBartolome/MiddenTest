@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -21,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.middentest.R
+import com.example.middentest.data.models.UserInfo
 import com.example.middentest.ui.theme.GreyHorizontalDivider
 import com.example.middentest.ui.theme.GreyIcon
 import com.example.middentest.ui.theme.GreySubtitle
@@ -42,18 +46,24 @@ import com.example.middentest.ui.theme.sfDisplayFontFamily
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun ContactList(onClick: () -> Unit = {}) {
+fun ContactList(userList: List<UserInfo>, onClick: () -> Unit = {}) {
 
     LazyColumn {
-        items(10) {
-            ContactListItem(onClick)
+        itemsIndexed(items = userList){ index, user ->
+            ContactListItem(name = user.name.toString(), email = user.email?: "", imageURL = user.picture?.large?: ""){
+                onClick
+            }
         }
     }
 
 }
 
 @Composable
-private fun ContactListItem(onClick: () -> Unit = {}) {
+private fun ContactListItem(
+    name: String,
+    email: String,
+    imageURL: String,
+    onClick: () -> Unit = {}) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -66,16 +76,18 @@ private fun ContactListItem(onClick: () -> Unit = {}) {
             Row() {
                 Column(modifier = Modifier.fillMaxHeight()) {
                     GlideImage(
-                        imageModel = "https://i.pravatar.cc/300",
+                        imageModel = imageURL,
                         contentDescription = "",
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.clip(CircleShape).size(64.dp),
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(64.dp),
                         placeHolder = ColorPainter(Color.Red)
                     )
                 }
                 Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                     Text(
-                        text = "Andrés Martinez",
+                        text = name,
                         color = MaterialTheme.colorScheme.onBackground,
                         fontFamily = sfDisplayFontFamily,
                         fontWeight = FontWeight.Bold,
@@ -84,7 +96,7 @@ private fun ContactListItem(onClick: () -> Unit = {}) {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "andres.mart@gmail.com",
+                        text = email,
                         color = GreySubtitle
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -117,7 +129,7 @@ private fun ContactListItem(onClick: () -> Unit = {}) {
 private fun PrevMainScreen() {
     MiddenTestTheme {
         Surface {
-            ContactList()
+            ContactList(mutableListOf<UserInfo>())
         }
     }
 }

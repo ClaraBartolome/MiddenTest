@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.middentest.common.SEED
 import com.example.middentest.data.models.LoadingState
 import com.example.middentest.data.models.UserInfoApiResult
 import com.example.middentest.network.RetrofitInstance
@@ -32,7 +33,7 @@ class MainViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 _loadingState.value = LoadingState.LOADING
-                val response = apiService.getUserList(5)
+                val response = apiService.getUserList(5, SEED)
                 if (response.results.isNotEmpty()) {
                     Log.v(TAG, "Results loaded")
                     _userInfoApiResult.value = response

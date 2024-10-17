@@ -1,5 +1,6 @@
 package com.example.middentest.network
 
+import com.example.middentest.common.BASE_URL
 import com.example.middentest.data.models.UserInfoApiResult
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -10,13 +11,12 @@ import retrofit2.http.Query
 interface ApiService {
     @GET(".")
     suspend fun getUserList(
-        @Query("results") number: Int
+        @Query("results") number: Int,
+        @Query("seed") seed: String,
     ): UserInfoApiResult
 }
 
 object RetrofitInstance {
-    private
-    const val BASE_URL = "https://randomuser.me/api/"
     val api: ApiService by lazy {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
