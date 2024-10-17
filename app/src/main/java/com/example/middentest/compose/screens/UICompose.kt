@@ -9,6 +9,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +26,10 @@ import com.example.middentest.ui.theme.MiddenTestTheme
 fun UICompose() {
     val ctx = LocalContext.current
     val navController = rememberNavController()
+
+    //Toolbar
+    val screen = remember { mutableStateOf(MiddenTestScreens.ContactList) }
+
     Scaffold(
         topBar = {
             TopBarConfig(
@@ -41,9 +47,11 @@ fun UICompose() {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = MiddenTestScreens.ContactList.name) {
-                ContactList()
+                screen.value = MiddenTestScreens.ContactList
+                ContactList { navController.navigate(MiddenTestScreens.UserProfile.name) }
             }
             composable(route = MiddenTestScreens.UserProfile.name) {
+                screen.value = MiddenTestScreens.UserProfile
                 UserProfile()
             }
         }
