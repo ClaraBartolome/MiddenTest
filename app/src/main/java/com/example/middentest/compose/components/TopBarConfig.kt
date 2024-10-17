@@ -20,8 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.middentest.R
+import com.example.middentest.ui.theme.oswaldFontFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,9 +77,12 @@ private fun IconButtonApp(
 @Composable
 private fun TopAppBarTitle() {
     Text(
-        text = "Contacts",
+        text = "CONTACTS",
         color = MaterialTheme.colorScheme.onBackground,
+        fontFamily = oswaldFontFamily,
         fontWeight = FontWeight.SemiBold,
+        fontStyle = FontStyle.Normal,
+        fontSize = 24.sp
         //fontFamily = poppinsFontFamily
     )
 }
