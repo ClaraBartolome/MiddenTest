@@ -39,6 +39,19 @@ val oswaldFontFamily = FontFamily(
     Font(R.font.oswald_extralight_italic, FontWeight.ExtraLight, FontStyle.Italic),
 )
 
+val openSansFontFamily = FontFamily(
+    Font(R.font.opensans_light, FontWeight.Light, FontStyle.Normal),
+    Font(R.font.opensans_light_italic, FontWeight.Light, FontStyle.Italic),
+    Font(R.font.opensans_italic, FontWeight.Normal, FontStyle.Italic),
+    Font(R.font.opensans_bold_italic, FontWeight.Bold, FontStyle.Italic),
+    Font(R.font.opensans_semibold_italic, FontWeight.SemiBold, FontStyle.Italic),
+    Font(R.font.opensans_semibold, FontWeight.SemiBold, FontStyle.Normal),
+    Font(R.font.opensans_bold, FontWeight.Bold, FontStyle.Normal),
+    Font(R.font.opensans_extrabold, FontWeight.ExtraBold, FontStyle.Normal),
+    Font(R.font.opensans_extrabold_italic, FontWeight.ExtraBold, FontStyle.Italic),
+    Font(R.font.opensans_regular, FontWeight.Normal, FontStyle.Normal),
+)
+
 private val defaultTypography = Typography()
 
 val CustomTypography = Typography(

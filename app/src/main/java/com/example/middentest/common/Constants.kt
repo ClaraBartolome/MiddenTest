@@ -4,3 +4,5 @@ enum class MiddenTestScreens() {
     ContactList,
     UserProfile
 }
+
+const val BASE_URL = ""
