@@ -11,7 +11,8 @@ import retrofit2.http.Query
 interface ApiService {
     @GET(".")
     suspend fun getUserList(
-        @Query("results") number: Int,
+        @Query("page") page: Int,
+        @Query("results") results: Int,
         @Query("seed") seed: String,
     ): UserInfoApiResult
 }

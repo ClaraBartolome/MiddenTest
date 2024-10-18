@@ -19,6 +19,9 @@ class MainViewModel: ViewModel() {
     }
 
     private val apiService = RetrofitInstance.api
+    private val RESULTS = 10
+    private var PAGE = 1
+
 
     private val _loadingState = MutableLiveData<LoadingState>()
     val loadingState: LiveData<LoadingState>
@@ -33,9 +36,10 @@ class MainViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 _loadingState.value = LoadingState.LOADING
-                val response = apiService.getUserList(5, SEED)
+                val response = apiService.getUserList(page = PAGE, results = RESULTS, seed =  SEED)
                 if (response.results.isNotEmpty()) {
                     Log.v(TAG, "Results loaded")
+                    PAGE++
                     _userInfoApiResult.value = response
                     _loadingState.value = LoadingState.LOADED
                 }

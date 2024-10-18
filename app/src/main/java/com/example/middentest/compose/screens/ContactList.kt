@@ -36,6 +36,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.middentest.R
+import com.example.middentest.compose.components.ContactListItem
+import com.example.middentest.compose.components.EndlessScrollList
+import com.example.middentest.data.models.LoadingState
 import com.example.middentest.data.models.UserInfo
 import com.example.middentest.ui.theme.GreyHorizontalDivider
 import com.example.middentest.ui.theme.GreyIcon
@@ -45,76 +48,17 @@ import com.example.middentest.ui.theme.sfDisplayFontFamily
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun ContactList(userList: List<UserInfo>, paddingValues: PaddingValues, onClick: (index: Int) -> Unit = {}) {
+fun ContactList(userList: List<UserInfo>, paddingValues: PaddingValues, loadingState: LoadingState, onClick: (index: Int) -> Unit = {}, onLoadMore: () -> Unit = {}) {
 
-    LazyColumn(contentPadding = paddingValues) {
+    /*LazyColumn(contentPadding = paddingValues) {
         itemsIndexed(items = userList){ index, user ->
             ContactListItem(name = user.name.toString(), email = user.email?: "", imageURL = user.picture?.large?: ""){
                 onClick.invoke(index)
             }
         }
-    }
+    }*/
+    EndlessScrollList(userList = userList, paddingValues = paddingValues, modifier = Modifier, loadingState = loadingState, onClick = onClick, loadMore = onLoadMore)
 
-}
-
-@Composable
-private fun ContactListItem(
-    name: String,
-    email: String,
-    imageURL: String,
-    onClick: () -> Unit = {}) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(top = 16.dp, start = 16.dp)
-            .clickable { onClick.invoke() },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column {
-            Row() {
-                Column(modifier = Modifier.fillMaxHeight()) {
-                    GlideImage(
-                        imageModel = imageURL,
-                        contentDescription = "",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .size(64.dp),
-                        placeHolder = painterResource(id = R.drawable.img_user_thumbnail_placeholder)
-                    )
-                }
-                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-                    Text(
-                        text = name,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontFamily = sfDisplayFontFamily,
-                        fontWeight = FontWeight.Bold,
-                        fontStyle = FontStyle.Normal,
-                        fontSize = 16.sp
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = email,
-                        color = GreySubtitle
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    HorizontalDivider(color = GreyHorizontalDivider, thickness = 1.dp)
-                }
-
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                    IconButton(onClick = {}) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_keyboard_arrow_right),
-                            contentDescription = "",
-                            tint = GreyIcon,
-                        )
-                    }
-                }
-            }
-
-        }
-    }
 }
 
 @Preview(
@@ -128,7 +72,7 @@ private fun ContactListItem(
 private fun PrevMainScreen() {
     MiddenTestTheme {
         Surface {
-            ContactList(paddingValues = PaddingValues(), userList = mutableListOf<UserInfo>())
+            ContactList(paddingValues = PaddingValues(), userList = mutableListOf<UserInfo>(), loadingState = LoadingState.LOADING)
         }
     }
 }

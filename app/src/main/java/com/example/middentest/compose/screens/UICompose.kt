@@ -45,7 +45,7 @@ fun UICompose(viewModel: MainViewModel) {
     //userList
 
     val userList = remember {
-        mutableStateOf(listOf<UserInfo>())
+        mutableStateOf(mutableListOf<UserInfo>())
     }
 
     val loadingState = remember {
@@ -58,7 +58,7 @@ fun UICompose(viewModel: MainViewModel) {
     //viewModel
 
     viewModel.userInfoApiResult.observe(lifecycleOwner) {
-        userList.value = it.results
+        userList.value.addAll(it.results)
         Log.v("UICOMPOSE", userList.toString())
     }
 
@@ -72,7 +72,7 @@ fun UICompose(viewModel: MainViewModel) {
         topBar = {
             TopBarConfig(
                 screen = screen.value,
-                userInfo = if(userList.value.isNotEmpty()) userList.value[userIndex.value] else UserInfo(),
+                userInfo = if (userList.value.isNotEmpty()) userList.value[userIndex.value] else UserInfo(),
                 onNavigationIconClick = { createToast(context = ctx) },
                 onMoreVertClick = { createToast(context = ctx) }
             )
@@ -87,16 +87,24 @@ fun UICompose(viewModel: MainViewModel) {
         ) {
             composable(route = MiddenTestScreens.ContactList.name) {
                 screen.value = MiddenTestScreens.ContactList
-                when(loadingState.value){
-                    LoadingState.LOADING -> LoadingScreen()
-                    LoadingState.LOADED -> ContactList(paddingValues = innerPadding, userList = userList.value)  { index ->
+                ContactList(
+                    paddingValues = innerPadding,
+                    userList = userList.value,
+                    loadingState = loadingState.value,
+                    onClick = { index ->
                         userIndex.intValue = index
-                        navController.navigate(MiddenTestScreens.UserProfile.name) }
-                }
+                        navController.navigate(MiddenTestScreens.UserProfile.name)
+                    },
+                    onLoadMore = {
+                        viewModel.getUserInfoApiResult()
+                    })
             }
             composable(route = MiddenTestScreens.UserProfile.name) {
                 screen.value = MiddenTestScreens.UserProfile
-                UserProfileScreen(user = userList.value[userIndex.value], paddingValues = innerPadding)
+                UserProfileScreen(
+                    user = userList.value[userIndex.value],
+                    paddingValues = innerPadding
+                )
             }
         }
     }
