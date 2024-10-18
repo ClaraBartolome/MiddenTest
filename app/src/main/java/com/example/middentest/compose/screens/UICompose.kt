@@ -1,15 +1,20 @@
 package com.example.middentest.compose.screens
 
 import android.content.res.Configuration
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -27,6 +32,7 @@ import com.example.middentest.data.models.UserInfo
 import com.example.middentest.ui.theme.MiddenTestTheme
 import com.example.middentest.viewmodels.MainViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun UICompose(viewModel: MainViewModel) {
     val ctx = LocalContext.current
@@ -46,6 +52,9 @@ fun UICompose(viewModel: MainViewModel) {
         mutableStateOf(LoadingState.LOADING)
     }
 
+    // User selected
+    val userIndex = remember { mutableIntStateOf(0) }
+
     //viewModel
 
     viewModel.userInfoApiResult.observe(lifecycleOwner) {
@@ -62,26 +71,32 @@ fun UICompose(viewModel: MainViewModel) {
     Scaffold(
         topBar = {
             TopBarConfig(
+                screen = screen.value,
+                userInfo = if(userList.value.isNotEmpty()) userList.value[userIndex.value] else UserInfo(),
                 onNavigationIconClick = { createToast(context = ctx) },
                 onMoreVertClick = { createToast(context = ctx) }
             )
         },
         containerColor = MaterialTheme.colorScheme.background,
-        contentWindowInsets = ScaffoldDefaults.contentWindowInsets,
+        contentWindowInsets = WindowInsets.safeDrawing,
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = MiddenTestScreens.ContactList.name,
-            modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = MiddenTestScreens.ContactList.name) {
                 screen.value = MiddenTestScreens.ContactList
-                ContactList(userList.value) { navController.navigate(MiddenTestScreens.UserProfile.name) }
+                when(loadingState.value){
+                    LoadingState.LOADING -> LoadingScreen()
+                    LoadingState.LOADED -> ContactList(paddingValues = innerPadding, userList = userList.value)  { index ->
+                        userIndex.intValue = index
+                        navController.navigate(MiddenTestScreens.UserProfile.name) }
+                }
             }
             composable(route = MiddenTestScreens.UserProfile.name) {
                 screen.value = MiddenTestScreens.UserProfile
-                UserProfile()
+                UserProfileScreen(user = userList.value[userIndex.value], paddingValues = innerPadding)
             }
         }
     }

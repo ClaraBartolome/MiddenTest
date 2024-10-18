@@ -1,20 +1,24 @@
 package com.example.middentest.compose.screens
 
 import android.content.res.Configuration
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -27,53 +31,82 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.middentest.R
+import com.example.middentest.compose.bitmapDescriptorFromVector
+import com.example.middentest.compose.castGender
+import com.example.middentest.compose.formatDate
+import com.example.middentest.data.models.UserInfo
 import com.example.middentest.ui.theme.GreyHorizontalDivider
 import com.example.middentest.ui.theme.GreyTitleProfile
 import com.example.middentest.ui.theme.MiddenTestTheme
 import com.example.middentest.ui.theme.openSansFontFamily
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
+import com.skydoves.landscapist.glide.GlideImage
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun UserProfile() {
-    Column {
-        BannerProfilePicture()
-        ProfileListItem(
-            iconId = R.drawable.ic_user,
-            title = "Nombre y apellidos",
-            subtitle = "Laura Navarro Martinez"
-        )
-        ProfileListItem(
-            iconId = R.drawable.ic_mail,
-            title = "Nombre y apellidos",
-            subtitle = "Laura Navarro Martinez"
-        )
-        ProfileListItem(
-            iconId = R.drawable.ic_female,
-            title = "Nombre y apellidos",
-            subtitle = "Laura Navarro Martinez"
-        )
-        ProfileListItem(
-            iconId = R.drawable.ic_calendar,
-            title = "Nombre y apellidos",
-            subtitle = "Laura Navarro Martinez"
-        )
-        ProfileListItem(
-            iconId = R.drawable.ic_phone,
-            title = "Nombre y apellidos",
-            subtitle = "Laura Navarro Martinez"
-        )
+fun UserProfileScreen(user: UserInfo = UserInfo(), paddingValues: PaddingValues) {
+    LazyColumn(contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding())){
+        item {
+            BannerProfilePicture(thumbnailUrl = user.picture?.large ?: "")
+        }
+        item {
+            ProfileListItem(
+                iconId = R.drawable.ic_user,
+                title = stringResource(id = R.string.name_label),
+                subtitle = user.name.toString()
+            )
+        }
+        item {
+            ProfileListItem(
+                iconId = R.drawable.ic_mail,
+                title = stringResource(id = R.string.email_label),
+                subtitle = user.email?: ""
+            )
+        }
+        item {
+            ProfileListItem(
+                iconId = R.drawable.ic_female,
+                title = stringResource(id = R.string.gender_label),
+                subtitle = castGender(user.gender?: "")
+            )
+        }
+        item {
+            ProfileListItem(
+                iconId = R.drawable.ic_calendar,
+                title = stringResource(id = R.string.register_date_label),
+                subtitle = formatDate(user.registered?.date ?: "")
+            )
+        }
+        item {
+            ProfileListItem(
+                iconId = R.drawable.ic_phone,
+                title = stringResource(id = R.string.phone_label),
+                subtitle = user.phone?: ""
+            )
+        }
+        item {
+            AddressItem(user = user)
+        }
     }
-
 }
 
 @Composable
-private fun BannerProfilePicture() {
+private fun BannerProfilePicture(thumbnailUrl: String ) {
     Box(Modifier.height(238.dp)) {
         Box(
             modifier = Modifier
@@ -81,12 +114,13 @@ private fun BannerProfilePicture() {
                 .fillMaxWidth()
         ) {
             Column {
-                Image(
-                    painter = painterResource(id = R.drawable.img_banner_placeholder),
+                GlideImage(
+                    imageModel = "https://picsum.photos/2500/1667",
                     contentDescription = "",
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.TopStart,
-                    modifier = Modifier.height(200.dp)
+                    modifier = Modifier.height(200.dp),
+                    placeHolder = painterResource(id = R.drawable.img_banner_placeholder)
                 )
                 Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
                     IconButton(onClick = {}) {
@@ -111,8 +145,8 @@ private fun BannerProfilePicture() {
                 .fillMaxSize()
                 .padding(start = 17.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.img_avatar_placeholder),
+            GlideImage(
+                imageModel = thumbnailUrl,
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 alignment = Alignment.TopStart,
@@ -122,7 +156,8 @@ private fun BannerProfilePicture() {
                         border = BorderStroke(3.dp, MaterialTheme.colorScheme.background),
                         shape = CircleShape
                     )
-                    .clip(CircleShape)
+                    .clip(CircleShape),
+                placeHolder = painterResource(id = R.drawable.img_user_thumbnail_placeholder)
             )
         }
     }
@@ -168,6 +203,42 @@ private fun ProfileListItem(iconId: Int, title: String, subtitle: String) {
     }
 }
 
+@Composable
+fun AddressItem(user: UserInfo) {
+    val coordinates = LatLng(user.location?.coordinates?.latitude?.toDouble() ?: 0.0, user.location?.coordinates?.longitude?.toDouble() ?: 0.0)
+    val cameraPosition = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(coordinates, 10f)
+    }
+    Column(modifier = Modifier.padding(start = 77.dp, end = 16.dp, top = 17.dp)) {
+        Column {
+            Text(
+                text = stringResource(id = R.string.adress_label),
+                color = GreyTitleProfile,
+                fontFamily = openSansFontFamily,
+                fontStyle = FontStyle.Normal,
+                fontSize = 11.sp
+            )
+            Spacer(modifier = Modifier.height(11.dp))
+            GoogleMap(
+                cameraPositionState = cameraPosition,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(143.dp)
+            ){
+                Marker(
+                    state = MarkerState(position = coordinates),
+                    title = user.location?.street?.toString(),
+                    snippet = user.location?.country,
+                    icon = bitmapDescriptorFromVector(LocalContext.current, R.drawable.ic_marker)
+                )
+            }
+        }
+    }
+}
+
+
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(
     showBackground = true,
     showSystemUi = true,
@@ -179,7 +250,7 @@ private fun ProfileListItem(iconId: Int, title: String, subtitle: String) {
 private fun PrevMainScreen() {
     MiddenTestTheme {
         Surface {
-            UserProfile()
+            UserProfileScreen(paddingValues = PaddingValues())
         }
     }
 }

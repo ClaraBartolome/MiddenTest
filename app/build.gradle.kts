@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.play.services.maps)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -78,4 +79,8 @@ dependencies {
     // ViewModel and LiveData for MVVM architecture
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.livedata)
+    //Google Maps
+    implementation(libs.maps.compose)
+    //Lottie
+    implementation(libs.lottie.compose)
 }

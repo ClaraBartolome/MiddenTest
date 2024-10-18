@@ -25,12 +25,10 @@ data class UserInfo(
 )
 
 data class Info (
-
     @SerializedName("seed"    ) var seed    : String? = null,
     @SerializedName("results" ) var results : Int?    = null,
     @SerializedName("page"    ) var page    : Int?    = null,
     @SerializedName("version" ) var version : String? = null
-
 )
 
 
@@ -54,14 +52,22 @@ data class Location (
     @SerializedName("coordinates" ) var coordinates : Coordinates? = Coordinates(),
     @SerializedName("timezone"    ) var timezone    : Timezone?    = Timezone()
 
-)
+){
+    fun markerLocation(): String{
+        return "$city, $state, $country"
+    }
+}
 
 data class Street (
 
     @SerializedName("number" ) var number : Int?    = null,
     @SerializedName("name"   ) var name   : String? = null
 
-)
+){
+    override fun toString(): String {
+        return "$name $number"
+    }
+}
 
 data class Coordinates (
 

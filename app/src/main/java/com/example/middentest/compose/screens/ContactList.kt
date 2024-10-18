@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
@@ -23,7 +23,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,12 +45,12 @@ import com.example.middentest.ui.theme.sfDisplayFontFamily
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun ContactList(userList: List<UserInfo>, onClick: () -> Unit = {}) {
+fun ContactList(userList: List<UserInfo>, paddingValues: PaddingValues, onClick: (index: Int) -> Unit = {}) {
 
-    LazyColumn {
+    LazyColumn(contentPadding = paddingValues) {
         itemsIndexed(items = userList){ index, user ->
             ContactListItem(name = user.name.toString(), email = user.email?: "", imageURL = user.picture?.large?: ""){
-                onClick
+                onClick.invoke(index)
             }
         }
     }
@@ -82,7 +81,7 @@ private fun ContactListItem(
                         modifier = Modifier
                             .clip(CircleShape)
                             .size(64.dp),
-                        placeHolder = ColorPainter(Color.Red)
+                        placeHolder = painterResource(id = R.drawable.img_user_thumbnail_placeholder)
                     )
                 }
                 Column(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -129,7 +128,7 @@ private fun ContactListItem(
 private fun PrevMainScreen() {
     MiddenTestTheme {
         Surface {
-            ContactList(mutableListOf<UserInfo>())
+            ContactList(paddingValues = PaddingValues(), userList = mutableListOf<UserInfo>())
         }
     }
 }

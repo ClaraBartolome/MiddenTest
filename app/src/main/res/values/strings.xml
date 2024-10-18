@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">MiddenTest</string>
+    <string name="app_name" translatable="false">MiddenTest</string>
+    <string name="toolbarTitle">CONTACTS</string>
+    <string name="name_label">First and last name</string>
+    <string name="email_label" translatable="false">Email</string>
+    <string name="gender_label">Gender</string>
+    <string name="register_date_label">Registration date</string>
+    <string name="phone_label">Phone</string>
+    <string name="adress_label">Adress</string>
+    <string name="male_label">Male</string>
+    <string name="female_label">Female</string>
+    <string name="unspecified_label">Unspecified</string>
 </resources>

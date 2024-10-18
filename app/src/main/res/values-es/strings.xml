@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toolbarTitle">CONTACTOS</string>
+    <string name="name_label">Nombre y apellidos</string>
+    <string name="gender_label">Género</string>
+    <string name="register_date_label">Fecha de registro</string>
+    <string name="phone_label">Teléfono</string>
+    <string name="adress_label">Dirección</string>
+    <string name="male_label">Hombre</string>
+    <string name="female_label">Mujer</string>
+    <string name="unspecified_label">Sin especificar</string>
+</resources>

@@ -11,20 +11,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.middentest.R
+import com.example.middentest.common.MiddenTestScreens
+import com.example.middentest.data.models.UserInfo
 import com.example.middentest.ui.theme.oswaldFontFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarConfig(
+    screen: MiddenTestScreens,
+    userInfo: UserInfo,
     onNavigationIconClick: () -> Unit = {},
     onMoreVertClick: () -> Unit = {}
 ) {
     TopAppBar(
-        title = { TopAppBarTitle() },
+        title = { TopAppBarTitle(screen, userInfo) },
         navigationIcon = {
             IconButtonApp(iconId = R.drawable.ic_arrow_back, action = onNavigationIconClick)
         },
@@ -32,7 +37,18 @@ fun TopBarConfig(
             IconButtonApp(iconId = R.drawable.ic_more_vert, action = onMoreVertClick)
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Transparent
+            containerColor = when(screen) {
+                MiddenTestScreens.ContactList -> MaterialTheme.colorScheme.background
+                MiddenTestScreens.UserProfile -> Color.Transparent
+            },
+            actionIconContentColor = when(screen) {
+                MiddenTestScreens.ContactList -> MaterialTheme.colorScheme.onBackground
+                MiddenTestScreens.UserProfile -> Color.White
+            },
+            navigationIconContentColor = when(screen) {
+                MiddenTestScreens.ContactList -> MaterialTheme.colorScheme.onBackground
+                MiddenTestScreens.UserProfile -> Color.White
+            },
         )
     )
 }
@@ -43,8 +59,7 @@ private fun IconButtonApp(iconId: Int, action: () -> (Unit), contentDescription:
     IconButton(onClick = action) {
         Icon(
             painter = painterResource(id = iconId),
-            contentDescription = contentDescription,
-            tint = MaterialTheme.colorScheme.onBackground,
+            contentDescription = contentDescription
         )
     }
 }
@@ -58,21 +73,26 @@ private fun IconButtonApp(
     IconButton(onClick = action) {
         Icon(
             imageVector = imageVector,
-            contentDescription = contentDescription,
-            tint = MaterialTheme.colorScheme.onBackground
+            contentDescription = contentDescription
         )
     }
 }
 
 @Composable
-private fun TopAppBarTitle() {
+private fun TopAppBarTitle(screen: MiddenTestScreens, userInfo: UserInfo) {
     Text(
-        text = "CONTACTS",
-        color = MaterialTheme.colorScheme.onBackground,
+        text = when(screen){
+            MiddenTestScreens.ContactList -> stringResource(id = R.string.toolbarTitle)
+            MiddenTestScreens.UserProfile -> userInfo.name?.first ?: stringResource(id = R.string.toolbarTitle)
+        },
+        color = when(screen){
+            MiddenTestScreens.ContactList -> MaterialTheme.colorScheme.onBackground
+            MiddenTestScreens.UserProfile -> Color.White
+        },
         fontFamily = oswaldFontFamily,
         fontWeight = FontWeight.SemiBold,
         fontStyle = FontStyle.Normal,
-        fontSize = 24.sp
+        fontSize = 16.sp
         //fontFamily = poppinsFontFamily
     )
 }
