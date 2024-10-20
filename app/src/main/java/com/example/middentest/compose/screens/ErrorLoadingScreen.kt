@@ -5,7 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -18,10 +22,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.middentest.R
 import com.example.middentest.data.models.LoadingState
 import com.example.middentest.data.models.UserInfo
 import com.example.middentest.ui.theme.ErrorLoadingUsers
@@ -41,22 +49,29 @@ fun ErrorLoadingScreen(
         .nestedScroll(pullToRefreshState.nestedScrollConnection), contentAlignment = Alignment.Center){
         LazyColumn(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
             item {
-                Text(
-                    text = "Error loading users data",
-                    color = ErrorLoadingUsers,
-                    fontFamily = openSansFontFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontStyle = FontStyle.Normal,
-                    fontSize = 20.sp
-                )
-                Text(
-                    text = "Pull to refresh",
-                    color = ErrorLoadingUsers,
-                    fontFamily = openSansFontFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontStyle = FontStyle.Normal,
-                    fontSize = 14.sp
-                )
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = stringResource(id = R.string.error_screen_title),
+                        color = ErrorLoadingUsers,
+                        fontFamily = openSansFontFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontStyle = FontStyle.Normal,
+                        textAlign = TextAlign.Center,
+                        fontSize = 20.sp
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = stringResource(id = R.string.pull_to_refresh),
+                        color = ErrorLoadingUsers,
+                        fontFamily = openSansFontFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontStyle = FontStyle.Normal,
+                        textAlign = TextAlign.Center,
+                        fontSize = 14.sp
+                    )
+                }
             }
         }
         if(pullToRefreshState.isRefreshing){

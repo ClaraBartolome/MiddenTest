@@ -59,10 +59,10 @@ import com.skydoves.landscapist.glide.GlideImage
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun UserProfileScreen(user: UserInfo = UserInfo(), paddingValues: PaddingValues) {
+fun UserProfileScreen(user: UserInfo = UserInfo(), paddingValues: PaddingValues, onClickOnIcon: () -> Unit = {}) {
     LazyColumn(contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding())){
         item {
-            BannerProfilePicture(thumbnailUrl = user.picture?.large ?: "")
+            BannerProfilePicture(thumbnailUrl = user.picture?.large ?: "", onClickOnIcon)
         }
         item {
             ProfileListItem(
@@ -106,7 +106,7 @@ fun UserProfileScreen(user: UserInfo = UserInfo(), paddingValues: PaddingValues)
 }
 
 @Composable
-private fun BannerProfilePicture(thumbnailUrl: String ) {
+private fun BannerProfilePicture(thumbnailUrl: String, onClickOnIcon: () -> Unit = {}) {
     Box(Modifier.height(238.dp)) {
         Box(
             modifier = Modifier
@@ -123,13 +123,13 @@ private fun BannerProfilePicture(thumbnailUrl: String ) {
                     placeHolder = painterResource(id = R.drawable.img_banner_placeholder)
                 )
                 Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { onClickOnIcon.invoke()}) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_camera),
                             contentDescription = "",
                         )
                     }
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {onClickOnIcon.invoke()}) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_edit),
                             contentDescription = "",

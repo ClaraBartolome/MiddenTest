@@ -104,7 +104,16 @@ fun UICompose(viewModel: MainViewModel) {
                         MiddenTestScreens.UserProfile -> {navController.popBackStack()}
                     }
                 },
-                onMoreVertClick = { showDropdownMenu.value = true},
+                onMoreVertClick = {
+                    when(screen.value){
+                        MiddenTestScreens.ContactList -> {
+                            showDropdownMenu.value = true
+                        }
+                        MiddenTestScreens.UserProfile -> {
+                            createToast(ctx)
+                        }
+                    }
+                    },
                 isSearchOpen = isSearchOpen,
                 searchText = searchText,
                 onSearchInit = { name -> sortedUserList(userList = userList.value, name ) },
@@ -135,6 +144,7 @@ fun UICompose(viewModel: MainViewModel) {
                     isRefreshing = isRefreshing.value,
                     onClick = { index ->
                         userIndex.intValue = index
+                        isSearchOpen.value = false
                         navController.navigate(MiddenTestScreens.UserProfile.name)
                     },
                     onLoadMore = {
@@ -160,7 +170,8 @@ fun UICompose(viewModel: MainViewModel) {
                 screen.value = MiddenTestScreens.UserProfile
                 UserProfileScreen(
                     user = userList.value[userIndex.value],
-                    paddingValues = innerPadding
+                    paddingValues = innerPadding,
+                    onClickOnIcon = { createToast(ctx) }
                 )
             }
         }

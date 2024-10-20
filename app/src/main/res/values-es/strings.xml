@@ -10,4 +10,6 @@
     <string name="female_label">Mujer</string>
     <string name="unspecified_label">Sin especificar</string>
     <string name="search_label">Búsqueda</string>
+    <string name="error_screen_title">Error cargando la lista de usuarios</string>
+    <string name="pull_to_refresh">Desliza la pantalla hacia abajo para refrescar</string>
 </resources>
