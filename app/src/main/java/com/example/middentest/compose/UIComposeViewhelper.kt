@@ -12,6 +12,7 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.example.middentest.R
 import com.example.middentest.common.GENDER_FEMALE_RESPONSE
 import com.example.middentest.common.GENDER_MALE_RESPONSE
+import com.example.middentest.data.models.UserInfo
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import java.time.LocalDate
@@ -49,4 +50,8 @@ fun bitmapDescriptorFromVector(fragmentContext: Context, vectorResId: Int): Bitm
         val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
         draw(Canvas(bitmap))
         BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+
+fun sortedUserList(userList: List<UserInfo>, name: String): List<UserInfo>{
+    return userList.filter { userInfo -> userInfo.name.toString().contains(name, ignoreCase = true) }.sortedBy { userInfo -> userInfo.name.toString() }
 }

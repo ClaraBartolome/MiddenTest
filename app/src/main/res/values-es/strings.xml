@@ -9,4 +9,5 @@
     <string name="male_label">Hombre</string>
     <string name="female_label">Mujer</string>
     <string name="unspecified_label">Sin especificar</string>
+    <string name="search_label">Búsqueda</string>
 </resources>

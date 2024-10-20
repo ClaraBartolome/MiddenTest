@@ -49,16 +49,7 @@ import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun ContactList(userList: List<UserInfo>, paddingValues: PaddingValues, loadingState: LoadingState, onClick: (index: Int) -> Unit = {}, onLoadMore: () -> Unit = {}) {
-
-    /*LazyColumn(contentPadding = paddingValues) {
-        itemsIndexed(items = userList){ index, user ->
-            ContactListItem(name = user.name.toString(), email = user.email?: "", imageURL = user.picture?.large?: ""){
-                onClick.invoke(index)
-            }
-        }
-    }*/
     EndlessScrollList(userList = userList, paddingValues = paddingValues, modifier = Modifier, loadingState = loadingState, onClick = onClick, loadMore = onLoadMore)
-
 }
 
 @Preview(

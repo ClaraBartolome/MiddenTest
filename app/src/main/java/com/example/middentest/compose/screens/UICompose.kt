@@ -7,11 +7,9 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
@@ -25,8 +23,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.middentest.common.MiddenTestScreens
+import com.example.middentest.compose.components.CustomDropdownMenu
 import com.example.middentest.compose.components.TopBarConfig
 import com.example.middentest.compose.createToast
+import com.example.middentest.compose.sortedUserList
 import com.example.middentest.data.models.LoadingState
 import com.example.middentest.data.models.UserInfo
 import com.example.middentest.ui.theme.MiddenTestTheme
@@ -68,13 +68,34 @@ fun UICompose(viewModel: MainViewModel) {
 
     viewModel.getUserInfoApiResult()
 
+    //DropdownMenu
+    val showDropdownMenu = remember { mutableStateOf(false) }
+
+    //search bar
+
+    val isSearchOpen = remember {
+        mutableStateOf(false)
+    }
+    val searchText = remember { mutableStateOf("") }
+
     Scaffold(
         topBar = {
             TopBarConfig(
                 screen = screen.value,
                 userInfo = if (userList.value.isNotEmpty()) userList.value[userIndex.value] else UserInfo(),
                 onNavigationIconClick = { createToast(context = ctx) },
-                onMoreVertClick = { createToast(context = ctx) }
+                onMoreVertClick = { showDropdownMenu.value = true},
+                isSearchOpen = isSearchOpen,
+                searchText = searchText,
+                onSearchInit = { name -> sortedUserList(userList = userList.value, name ) },
+                onTextChange = { searchText.value = it},
+                onCloseClicked = { isSearchOpen.value = false
+                                 searchText.value = ""},
+                onClickOnSearched = { name ->
+                    userIndex.intValue = userList.value.indexOf(sortedUserList(userList.value, name).find { userInfo -> userInfo.name.toString().contains(name) })
+                    isSearchOpen.value = false
+                    navController.navigate(MiddenTestScreens.UserProfile.name)
+                }
             )
         },
         containerColor = MaterialTheme.colorScheme.background,
@@ -98,6 +119,18 @@ fun UICompose(viewModel: MainViewModel) {
                     onLoadMore = {
                         viewModel.getUserInfoApiResult()
                     })
+
+                //dropdown menu
+                if(showDropdownMenu.value){
+                    CustomDropdownMenu(
+                        paddingValues = innerPadding,
+                        isOpen = showDropdownMenu,
+                        onSearchClick = {
+                            isSearchOpen.value = true
+                            showDropdownMenu.value = false
+                        }
+                    )
+                }
             }
             composable(route = MiddenTestScreens.UserProfile.name) {
                 screen.value = MiddenTestScreens.UserProfile

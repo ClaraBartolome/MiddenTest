@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
@@ -23,34 +24,44 @@ import com.example.middentest.ui.theme.oswaldFontFamily
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarConfig(
+    isSearchOpen: MutableState<Boolean>,
     screen: MiddenTestScreens,
     userInfo: UserInfo,
     onNavigationIconClick: () -> Unit = {},
-    onMoreVertClick: () -> Unit = {}
+    onMoreVertClick: () -> Unit = {},
+    searchText: MutableState<String>,
+    onTextChange: (String) -> Unit,
+    onSearchInit: (String) -> List<UserInfo>,
+    onClickOnSearched: (String) -> Unit,
+    onCloseClicked: () -> Unit
 ) {
-    TopAppBar(
-        title = { TopAppBarTitle(screen, userInfo) },
-        navigationIcon = {
-            IconButtonApp(iconId = R.drawable.ic_arrow_back, action = onNavigationIconClick)
-        },
-        actions = {
-            IconButtonApp(iconId = R.drawable.ic_more_vert, action = onMoreVertClick)
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = when(screen) {
-                MiddenTestScreens.ContactList -> MaterialTheme.colorScheme.background
-                MiddenTestScreens.UserProfile -> Color.Transparent
+    if(isSearchOpen.value){
+        SearchBar(text = searchText, onSearchInit =onSearchInit , onClickOnSearched = onClickOnSearched, onTextChange = onTextChange, onCloseClicked=onCloseClicked)
+    }else{
+        TopAppBar(
+            title = { TopAppBarTitle(screen, userInfo) },
+            navigationIcon = {
+                IconButtonApp(iconId = R.drawable.ic_arrow_back, action = onNavigationIconClick)
             },
-            actionIconContentColor = when(screen) {
-                MiddenTestScreens.ContactList -> MaterialTheme.colorScheme.onBackground
-                MiddenTestScreens.UserProfile -> Color.White
+            actions = {
+                IconButtonApp(iconId = R.drawable.ic_more_vert, action = onMoreVertClick)
             },
-            navigationIconContentColor = when(screen) {
-                MiddenTestScreens.ContactList -> MaterialTheme.colorScheme.onBackground
-                MiddenTestScreens.UserProfile -> Color.White
-            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = when(screen) {
+                    MiddenTestScreens.ContactList -> MaterialTheme.colorScheme.background
+                    MiddenTestScreens.UserProfile -> Color.Transparent
+                },
+                actionIconContentColor = when(screen) {
+                    MiddenTestScreens.ContactList -> MaterialTheme.colorScheme.onBackground
+                    MiddenTestScreens.UserProfile -> Color.White
+                },
+                navigationIconContentColor = when(screen) {
+                    MiddenTestScreens.ContactList -> MaterialTheme.colorScheme.onBackground
+                    MiddenTestScreens.UserProfile -> Color.White
+                },
+            )
         )
-    )
+    }
 }
 
 
