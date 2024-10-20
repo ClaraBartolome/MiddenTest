@@ -83,7 +83,14 @@ fun UICompose(viewModel: MainViewModel) {
             TopBarConfig(
                 screen = screen.value,
                 userInfo = if (userList.value.isNotEmpty()) userList.value[userIndex.value] else UserInfo(),
-                onNavigationIconClick = { createToast(context = ctx) },
+                onNavigationIconClick = {
+                    when(screen.value){
+                        MiddenTestScreens.ContactList -> {
+                            createToast(ctx)
+                        }
+                        MiddenTestScreens.UserProfile -> {navController.popBackStack()}
+                    }
+                },
                 onMoreVertClick = { showDropdownMenu.value = true},
                 isSearchOpen = isSearchOpen,
                 searchText = searchText,
