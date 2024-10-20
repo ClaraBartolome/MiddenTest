@@ -52,6 +52,6 @@ fun bitmapDescriptorFromVector(fragmentContext: Context, vectorResId: Int): Bitm
         BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
-fun sortedUserList(userList: List<UserInfo>, name: String): List<UserInfo>{
-    return userList.filter { userInfo -> userInfo.name.toString().contains(name, ignoreCase = true) }.sortedBy { userInfo -> userInfo.name.toString() }
+fun sortedUserList(userList: List<UserInfo>, input: String): List<UserInfo>{
+    return userList.filter { userInfo -> userInfo.name.toString().contains(input, ignoreCase = true) || (userInfo.email?.contains(input, ignoreCase = true) == true) }.sortedBy { userInfo -> userInfo.name.toString() }
 }

@@ -59,6 +59,7 @@ fun UICompose(viewModel: MainViewModel) {
 
     viewModel.userInfoApiResult.observe(lifecycleOwner) {
         userList.value.addAll(it.results)
+        userList.value.distinct()
         Log.v("UICOMPOSE", userList.toString())
     }
 
