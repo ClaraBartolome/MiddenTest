@@ -48,8 +48,12 @@ import com.example.middentest.ui.theme.sfDisplayFontFamily
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun ContactList(userList: List<UserInfo>, paddingValues: PaddingValues, loadingState: LoadingState, onClick: (index: Int) -> Unit = {}, onLoadMore: () -> Unit = {}) {
-    EndlessScrollList(userList = userList, paddingValues = paddingValues, modifier = Modifier, loadingState = loadingState, onClick = onClick, loadMore = onLoadMore)
+fun ContactList(userList: List<UserInfo>, paddingValues: PaddingValues, loadingState: LoadingState, isRefreshing: Boolean, onClick: (index: Int) -> Unit = {}, onLoadMore: () -> Unit = {}, onRefresh: () -> Unit = {}) {
+    if(loadingState.status == LoadingState.Status.FAILED){
+        ErrorLoadingScreen(isRefreshing, onRefresh)
+    }else{
+        EndlessScrollList(userList = userList, paddingValues = paddingValues, modifier = Modifier, loadingState = loadingState, onClick = onClick, loadMore = onLoadMore)
+    }
 }
 
 @Preview(
@@ -63,7 +67,7 @@ fun ContactList(userList: List<UserInfo>, paddingValues: PaddingValues, loadingS
 private fun PrevMainScreen() {
     MiddenTestTheme {
         Surface {
-            ContactList(paddingValues = PaddingValues(), userList = mutableListOf<UserInfo>(), loadingState = LoadingState.LOADING)
+            ContactList(paddingValues = PaddingValues(), userList = mutableListOf<UserInfo>(), loadingState = LoadingState.LOADING, isRefreshing = false)
         }
     }
 }

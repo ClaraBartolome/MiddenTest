@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +32,9 @@ import com.example.middentest.data.models.LoadingState
 import com.example.middentest.data.models.UserInfo
 import com.example.middentest.ui.theme.MiddenTestTheme
 import com.example.middentest.viewmodels.MainViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -38,6 +42,8 @@ fun UICompose(viewModel: MainViewModel) {
     val ctx = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val navController = rememberNavController()
+
+    val scope = rememberCoroutineScope()
 
     //Toolbar
     val screen = remember { mutableStateOf(MiddenTestScreens.ContactList) }
@@ -67,7 +73,8 @@ fun UICompose(viewModel: MainViewModel) {
         loadingState.value = it
     }
 
-    viewModel.getUserInfoApiResult()
+    initList(scope, viewModel)
+
 
     //DropdownMenu
     val showDropdownMenu = remember { mutableStateOf(false) }
@@ -78,6 +85,11 @@ fun UICompose(viewModel: MainViewModel) {
         mutableStateOf(false)
     }
     val searchText = remember { mutableStateOf("") }
+
+    //Error screen
+    val isRefreshing = remember {
+        mutableStateOf(false)
+    }
 
     Scaffold(
         topBar = {
@@ -120,12 +132,16 @@ fun UICompose(viewModel: MainViewModel) {
                     paddingValues = innerPadding,
                     userList = userList.value,
                     loadingState = loadingState.value,
+                    isRefreshing = isRefreshing.value,
                     onClick = { index ->
                         userIndex.intValue = index
                         navController.navigate(MiddenTestScreens.UserProfile.name)
                     },
                     onLoadMore = {
                         viewModel.getUserInfoApiResult()
+                    },
+                    onRefresh = {
+                        initList(scope, viewModel)
                     })
 
                 //dropdown menu
@@ -148,6 +164,12 @@ fun UICompose(viewModel: MainViewModel) {
                 )
             }
         }
+    }
+}
+
+private fun initList(scope:CoroutineScope, viewModel: MainViewModel){
+    scope.launch {
+        viewModel.getUserInfoApiResult()
     }
 }
 
