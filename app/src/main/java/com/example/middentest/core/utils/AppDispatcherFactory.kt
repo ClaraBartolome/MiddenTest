@@ -1,4 +1,4 @@
-package com.example.proyecto2.utils
+package com.example.middentest.core.utils
 
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext

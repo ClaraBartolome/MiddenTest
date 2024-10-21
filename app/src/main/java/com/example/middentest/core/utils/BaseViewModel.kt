@@ -1,7 +1,6 @@
 package com.example.middentest.core.utils
 
 import androidx.lifecycle.ViewModel
-import com.example.proyecto2.utils.DispatcherFactory
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job

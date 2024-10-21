@@ -1,5 +1,9 @@
 package com.example.middentest.compose.screens
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Build
 import android.util.Log
@@ -44,6 +48,9 @@ fun UICompose(viewModel: MainViewModel) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val navController = rememberNavController()
     val toastLabel = stringResource(id = R.string.soon_label)
+    val activity = ctx.findActivity()
+
+    activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
     val scope = rememberCoroutineScope()
 
@@ -195,6 +202,14 @@ private fun initList(scope: CoroutineScope, viewModel: MainViewModel) {
         viewModel.getUserInfoApiResult()
     }
 }
+
+fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
+}
+
+
 
 @Preview(
     showBackground = true,

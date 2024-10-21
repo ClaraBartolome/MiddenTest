@@ -24,10 +24,4 @@ class RetrofitClient {
         val instance = RetrofitClient().retrofit
         assert(instance.baseUrl().url().toString() == BASE_URL)
     }
-
-    @Test
-    fun testRandomUser(){
-        val api = retrofit.create(RandomUserApi::class.java)
-
-    }
 }

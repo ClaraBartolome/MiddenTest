@@ -2,11 +2,11 @@ package com.example.middentest.core.di
 
 import android.app.Application
 import com.example.middentest.core.common.BASE_URL
+import com.example.middentest.core.utils.AppDispatcherFactory
+import com.example.middentest.core.utils.DispatcherFactory
 import com.example.middentest.network.RandomUserApi
-import com.example.middentest.network.RandomUserRepository
+import com.example.middentest.network.RandomUserRepositoryImpl
 import com.example.middentest.viewmodels.MainViewModel
-import com.example.proyecto2.utils.AppDispatcherFactory
-import com.example.proyecto2.utils.DispatcherFactory
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -20,7 +20,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val viewModelModule: Module = module {
     viewModel {
-        MainViewModel(get(),
+        MainViewModel(
+            get(),
             getUserInfoUseCase = get(named("get_user_info"))
             )
     }
@@ -78,7 +79,7 @@ val randomUserAPIModule: Module = module {
 
 val repositoryModule = module {
     single {
-        RandomUserRepository(get())
+        RandomUserRepositoryImpl(get())
     }
 }
 
