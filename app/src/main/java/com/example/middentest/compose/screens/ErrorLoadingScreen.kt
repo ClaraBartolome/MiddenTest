@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
@@ -30,13 +28,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.middentest.R
-import com.example.middentest.data.models.LoadingState
-import com.example.middentest.data.models.UserInfo
 import com.example.middentest.ui.theme.ErrorLoadingUsers
 import com.example.middentest.ui.theme.MiddenTestTheme
 import com.example.middentest.ui.theme.openSansFontFamily
-import com.example.middentest.ui.theme.oswaldFontFamily
-import com.example.middentest.ui.theme.sfDisplayFontFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,13 +39,23 @@ fun ErrorLoadingScreen(
     onRefresh: () -> Unit = {}
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
-    Box(modifier = Modifier
-        .nestedScroll(pullToRefreshState.nestedScrollConnection), contentAlignment = Alignment.Center){
-        LazyColumn(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+    Box(
+        modifier = Modifier
+            .nestedScroll(pullToRefreshState.nestedScrollConnection),
+        contentAlignment = Alignment.Center
+    ) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
             item {
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     Text(
                         text = stringResource(id = R.string.error_screen_title),
                         color = ErrorLoadingUsers,
@@ -74,19 +78,19 @@ fun ErrorLoadingScreen(
                 }
             }
         }
-        if(pullToRefreshState.isRefreshing){
+        if (pullToRefreshState.isRefreshing) {
             LaunchedEffect(true) {
                 onRefresh.invoke()
             }
         }
         LaunchedEffect(isRefreshing) {
-            if(isRefreshing){
+            if (isRefreshing) {
                 pullToRefreshState.startRefresh()
-            }else{
+            } else {
                 pullToRefreshState.endRefresh()
             }
         }
-        if(pullToRefreshState.isRefreshing){
+        if (pullToRefreshState.isRefreshing) {
             PullToRefreshContainer(state = pullToRefreshState)
         }
     }

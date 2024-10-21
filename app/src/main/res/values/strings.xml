@@ -13,4 +13,5 @@
     <string name="search_label">Search</string>
     <string name="error_screen_title">Error loading users data</string>
     <string name="pull_to_refresh">Pull to refresh</string>
+    <string name="soon_label">Soon</string>
 </resources>

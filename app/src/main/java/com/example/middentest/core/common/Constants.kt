@@ -1,4 +1,4 @@
-package com.example.middentest.common
+package com.example.middentest.core.common
 
 enum class MiddenTestScreens() {
     ContactList,

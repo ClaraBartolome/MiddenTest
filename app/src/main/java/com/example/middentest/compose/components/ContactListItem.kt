@@ -39,7 +39,8 @@ fun ContactListItem(
     name: String,
     email: String,
     imageURL: String,
-    onClick: () -> Unit = {}) {
+    onClick: () -> Unit = {}
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

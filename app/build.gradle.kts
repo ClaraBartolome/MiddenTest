@@ -83,4 +83,11 @@ dependencies {
     implementation(libs.maps.compose)
     //Lottie
     implementation(libs.lottie.compose)
+    //Koin
+    implementation(libs.koin.androidx.compose)
+
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.retrofit2.kotlin.coroutines.adapter)
+
 }

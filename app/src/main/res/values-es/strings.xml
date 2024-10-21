@@ -12,4 +12,5 @@
     <string name="search_label">Búsqueda</string>
     <string name="error_screen_title">Error cargando la lista de usuarios</string>
     <string name="pull_to_refresh">Desliza la pantalla hacia abajo para refrescar</string>
+    <string name="soon_label">Próximamente</string>
 </resources>

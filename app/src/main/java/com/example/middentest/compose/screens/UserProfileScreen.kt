@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -59,8 +58,12 @@ import com.skydoves.landscapist.glide.GlideImage
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun UserProfileScreen(user: UserInfo = UserInfo(), paddingValues: PaddingValues, onClickOnIcon: () -> Unit = {}) {
-    LazyColumn(contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding())){
+fun UserProfileScreen(
+    user: UserInfo = UserInfo(),
+    paddingValues: PaddingValues,
+    onClickOnIcon: () -> Unit = {}
+) {
+    LazyColumn(contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding())) {
         item {
             BannerProfilePicture(thumbnailUrl = user.picture?.large ?: "", onClickOnIcon)
         }
@@ -75,14 +78,14 @@ fun UserProfileScreen(user: UserInfo = UserInfo(), paddingValues: PaddingValues,
             ProfileListItem(
                 iconId = R.drawable.ic_mail,
                 title = stringResource(id = R.string.email_label),
-                subtitle = user.email?: ""
+                subtitle = user.email ?: ""
             )
         }
         item {
             ProfileListItem(
                 iconId = R.drawable.ic_female,
                 title = stringResource(id = R.string.gender_label),
-                subtitle = castGender(user.gender?: "")
+                subtitle = castGender(user.gender ?: "")
             )
         }
         item {
@@ -96,7 +99,7 @@ fun UserProfileScreen(user: UserInfo = UserInfo(), paddingValues: PaddingValues,
             ProfileListItem(
                 iconId = R.drawable.ic_phone,
                 title = stringResource(id = R.string.phone_label),
-                subtitle = user.phone?: ""
+                subtitle = user.phone ?: ""
             )
         }
         item {
@@ -123,13 +126,13 @@ private fun BannerProfilePicture(thumbnailUrl: String, onClickOnIcon: () -> Unit
                     placeHolder = painterResource(id = R.drawable.img_banner_placeholder)
                 )
                 Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-                    IconButton(onClick = { onClickOnIcon.invoke()}) {
+                    IconButton(onClick = { onClickOnIcon.invoke() }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_camera),
                             contentDescription = "",
                         )
                     }
-                    IconButton(onClick = {onClickOnIcon.invoke()}) {
+                    IconButton(onClick = { onClickOnIcon.invoke() }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_edit),
                             contentDescription = "",
@@ -205,7 +208,10 @@ private fun ProfileListItem(iconId: Int, title: String, subtitle: String) {
 
 @Composable
 fun AddressItem(user: UserInfo) {
-    val coordinates = LatLng(user.location?.coordinates?.latitude?.toDouble() ?: 0.0, user.location?.coordinates?.longitude?.toDouble() ?: 0.0)
+    val coordinates = LatLng(
+        user.location?.coordinates?.latitude?.toDouble() ?: 0.0,
+        user.location?.coordinates?.longitude?.toDouble() ?: 0.0
+    )
     val cameraPosition = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(coordinates, 10f)
     }
@@ -224,7 +230,7 @@ fun AddressItem(user: UserInfo) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(143.dp)
-            ){
+            ) {
                 Marker(
                     state = MarkerState(position = coordinates),
                     title = user.location?.street?.toString(),
@@ -235,7 +241,6 @@ fun AddressItem(user: UserInfo) {
         }
     }
 }
-
 
 
 @RequiresApi(Build.VERSION_CODES.O)

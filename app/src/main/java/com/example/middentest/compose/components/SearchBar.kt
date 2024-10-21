@@ -5,26 +5,21 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,7 +40,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -66,39 +60,43 @@ fun SearchBar(
     onCloseClicked: () -> Unit
 ) {
     val expanded = remember { mutableStateOf(false) }
-        LazyColumn(modifier = Modifier.padding(top = 45.dp)) {
-            item {
-                SearchBarConfig(
-                    text = text,
-                    onTextChange = {
-                        onTextChange.invoke(it)
-                        expanded.value = true
-                                   },
-                    onCloseClicked = onCloseClicked
-                )
-            }
-            item {
-                AnimatedVisibility(visible = expanded.value) {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        shape = RectangleShape,
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.background,
-                        ),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+    LazyColumn(modifier = Modifier.padding(top = 45.dp)) {
+        item {
+            SearchBarConfig(
+                text = text,
+                onTextChange = {
+                    onTextChange.invoke(it)
+                    expanded.value = true
+                },
+                onCloseClicked = onCloseClicked
+            )
+        }
+        item {
+            AnimatedVisibility(visible = expanded.value) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    shape = RectangleShape,
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.background,
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+                ) {
+                    LazyColumn(
+                        modifier = Modifier.heightIn(max = 150.dp),
                     ) {
-                        LazyColumn(
-                            modifier = Modifier.heightIn(max = 150.dp),
-                        ) {
-                            itemsIndexed(onSearchInit.invoke(text.value)){ index, item ->
-                                ItemSearchSuggestion(userName = item.name.toString(), userEmail = item.email?: "", onClick = onClickOnSearched)
-                            }
+                        items(onSearchInit.invoke(text.value)) { item ->
+                            ItemSearchSuggestion(
+                                userName = item.name.toString(),
+                                userEmail = item.email ?: "",
+                                onClick = onClickOnSearched
+                            )
                         }
                     }
                 }
             }
         }
+    }
 }
 
 @Composable
@@ -183,7 +181,8 @@ fun ItemSearchSuggestion(userName: String, userEmail: String, onClick: (String) 
         .padding(top = 8.dp)
         .padding(horizontal = 16.dp)) {
         Row(
-            verticalAlignment = Alignment.CenterVertically){
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Column(Modifier.weight(1.0f)) {
                 Text(
                     text = userName,
@@ -203,7 +202,8 @@ fun ItemSearchSuggestion(userName: String, userEmail: String, onClick: (String) 
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .weight(1.0f), horizontalArrangement = Arrangement.End) {
+                    .weight(1.0f), horizontalArrangement = Arrangement.End
+            ) {
                 IconButton(onClick = {}) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_keyboard_arrow_right),

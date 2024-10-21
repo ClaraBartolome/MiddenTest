@@ -16,9 +16,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.example.middentest.R
-import com.example.middentest.common.MiddenTestScreens
+import com.example.middentest.core.common.MiddenTestScreens
 import com.example.middentest.data.models.UserInfo
 import com.example.middentest.ui.theme.oswaldFontFamily
 
@@ -36,9 +35,15 @@ fun TopBarConfig(
     onClickOnSearched: (String) -> Unit,
     onCloseClicked: () -> Unit
 ) {
-    if(isSearchOpen.value){
-        SearchBar(text = searchText, onSearchInit =onSearchInit , onClickOnSearched = onClickOnSearched, onTextChange = onTextChange, onCloseClicked=onCloseClicked)
-    }else{
+    if (isSearchOpen.value) {
+        SearchBar(
+            text = searchText,
+            onSearchInit = onSearchInit,
+            onClickOnSearched = onClickOnSearched,
+            onTextChange = onTextChange,
+            onCloseClicked = onCloseClicked
+        )
+    } else {
         TopAppBar(
             title = { TopAppBarTitle(screen, userInfo) },
             navigationIcon = {
@@ -48,15 +53,15 @@ fun TopBarConfig(
                 IconButtonApp(iconId = R.drawable.ic_more_vert, action = onMoreVertClick)
             },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = when(screen) {
+                containerColor = when (screen) {
                     MiddenTestScreens.ContactList -> MaterialTheme.colorScheme.background
                     MiddenTestScreens.UserProfile -> Color.Transparent
                 },
-                actionIconContentColor = when(screen) {
+                actionIconContentColor = when (screen) {
                     MiddenTestScreens.ContactList -> MaterialTheme.colorScheme.onBackground
                     MiddenTestScreens.UserProfile -> Color.White
                 },
-                navigationIconContentColor = when(screen) {
+                navigationIconContentColor = when (screen) {
                     MiddenTestScreens.ContactList -> MaterialTheme.colorScheme.onBackground
                     MiddenTestScreens.UserProfile -> Color.White
                 },
@@ -93,11 +98,12 @@ private fun IconButtonApp(
 @Composable
 private fun TopAppBarTitle(screen: MiddenTestScreens, userInfo: UserInfo) {
     Text(
-        text = when(screen){
+        text = when (screen) {
             MiddenTestScreens.ContactList -> stringResource(id = R.string.toolbarTitle)
-            MiddenTestScreens.UserProfile -> userInfo.name?.first ?: stringResource(id = R.string.toolbarTitle)
+            MiddenTestScreens.UserProfile -> userInfo.name?.first
+                ?: stringResource(id = R.string.toolbarTitle)
         },
-        color = when(screen){
+        color = when (screen) {
             MiddenTestScreens.ContactList -> MaterialTheme.colorScheme.onBackground
             MiddenTestScreens.UserProfile -> Color.White
         },

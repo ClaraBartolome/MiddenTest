@@ -45,12 +45,16 @@ fun EndlessScrollList(
 
     // display our list
     LazyColumn(contentPadding = paddingValues, modifier = modifier, state = listState) {
-        itemsIndexed(items = userList){ index, user ->
-            ContactListItem(name = user.name.toString(), email = user.email?: "", imageURL = user.picture?.large?: ""){
+        itemsIndexed(items = userList) { index, user ->
+            ContactListItem(
+                name = user.name.toString(),
+                email = user.email ?: "",
+                imageURL = user.picture?.large ?: ""
+            ) {
                 onClick.invoke(index)
             }
         }
-        if(loadingState == LoadingState.LOADING){
+        if (loadingState == LoadingState.LOADING) {
             item {
                 Spacer(modifier = Modifier.height(10.dp))
                 LoadingScreen(paddingValues = PaddingValues())

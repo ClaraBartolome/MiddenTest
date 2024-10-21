@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Scaffold
@@ -34,12 +33,19 @@ import com.example.middentest.ui.theme.openSansFontFamily
 fun CustomDropdownMenu(
     paddingValues: PaddingValues = PaddingValues(),
     isOpen: MutableState<Boolean> = remember { mutableStateOf(true) },
-    onSearchClick: () -> Unit = {},) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .wrapContentSize(Alignment.TopEnd)
-        .padding(paddingValues)){
-        DropdownMenu(expanded = isOpen.value, onDismissRequest = { isOpen.value = false }, modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
+    onSearchClick: () -> Unit = {},
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.TopEnd)
+            .padding(paddingValues)
+    ) {
+        DropdownMenu(
+            expanded = isOpen.value,
+            onDismissRequest = { isOpen.value = false },
+            modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
+        ) {
             DropdownMenuItem(text = {
                 Text(
                     text = stringResource(id = R.string.search_label),
@@ -63,9 +69,11 @@ fun CustomDropdownMenu(
 private fun PrevAddExpenseScreen() {
     MiddenTestTheme {
         Scaffold { innerPadding ->
-            Surface(modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding), color = Color.Blue) {
+            Surface(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding), color = Color.Blue
+            ) {
                 CustomDropdownMenu()
             }
         }

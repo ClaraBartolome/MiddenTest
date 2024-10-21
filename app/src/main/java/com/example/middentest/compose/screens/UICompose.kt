@@ -18,12 +18,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.middentest.common.MiddenTestScreens
+import com.example.middentest.R
+import com.example.middentest.core.common.MiddenTestScreens
 import com.example.middentest.compose.components.CustomDropdownMenu
 import com.example.middentest.compose.components.TopBarConfig
 import com.example.middentest.compose.createToast
@@ -34,7 +36,6 @@ import com.example.middentest.ui.theme.MiddenTestTheme
 import com.example.middentest.viewmodels.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -42,6 +43,7 @@ fun UICompose(viewModel: MainViewModel) {
     val ctx = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val navController = rememberNavController()
+    val toastLabel = stringResource(id = R.string.soon_label)
 
     val scope = rememberCoroutineScope()
 
@@ -97,31 +99,41 @@ fun UICompose(viewModel: MainViewModel) {
                 screen = screen.value,
                 userInfo = if (userList.value.isNotEmpty()) userList.value[userIndex.value] else UserInfo(),
                 onNavigationIconClick = {
-                    when(screen.value){
+                    when (screen.value) {
                         MiddenTestScreens.ContactList -> {
-                            createToast(ctx)
+                            createToast(ctx, toastLabel)
                         }
-                        MiddenTestScreens.UserProfile -> {navController.popBackStack()}
+
+                        MiddenTestScreens.UserProfile -> {
+                            navController.popBackStack()
+                        }
                     }
                 },
                 onMoreVertClick = {
-                    when(screen.value){
+                    when (screen.value) {
                         MiddenTestScreens.ContactList -> {
                             showDropdownMenu.value = true
                         }
+
                         MiddenTestScreens.UserProfile -> {
-                            createToast(ctx)
+                            createToast(ctx, toastLabel)
                         }
                     }
-                    },
+                },
                 isSearchOpen = isSearchOpen,
                 searchText = searchText,
-                onSearchInit = { name -> sortedUserList(userList = userList.value, name ) },
-                onTextChange = { searchText.value = it},
-                onCloseClicked = { isSearchOpen.value = false
-                                 searchText.value = ""},
+                onSearchInit = { name -> sortedUserList(userList = userList.value, name) },
+                onTextChange = { searchText.value = it },
+                onCloseClicked = {
+                    isSearchOpen.value = false
+                    searchText.value = ""
+                },
                 onClickOnSearched = { name ->
-                    userIndex.intValue = userList.value.indexOf(sortedUserList(userList.value, name).find { userInfo -> userInfo.name.toString().contains(name) })
+                    userIndex.intValue = userList.value.indexOf(
+                        sortedUserList(
+                            userList.value,
+                            name
+                        ).find { userInfo -> userInfo.name.toString().contains(name) })
                     isSearchOpen.value = false
                     navController.navigate(MiddenTestScreens.UserProfile.name)
                 }
@@ -155,7 +167,7 @@ fun UICompose(viewModel: MainViewModel) {
                     })
 
                 //dropdown menu
-                if(showDropdownMenu.value){
+                if (showDropdownMenu.value) {
                     CustomDropdownMenu(
                         paddingValues = innerPadding,
                         isOpen = showDropdownMenu,
@@ -171,14 +183,14 @@ fun UICompose(viewModel: MainViewModel) {
                 UserProfileScreen(
                     user = userList.value[userIndex.value],
                     paddingValues = innerPadding,
-                    onClickOnIcon = { createToast(ctx) }
+                    onClickOnIcon = { createToast(ctx, toastLabel) }
                 )
             }
         }
     }
 }
 
-private fun initList(scope:CoroutineScope, viewModel: MainViewModel){
+private fun initList(scope: CoroutineScope, viewModel: MainViewModel) {
     scope.launch {
         viewModel.getUserInfoApiResult()
     }
