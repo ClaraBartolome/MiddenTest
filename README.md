@@ -1,6 +1,28 @@
 # <img align="left" src="assets/appIcon.svg" alt="image" width="45" height="45"/>MiddenTest
 This is a technical test for Mind Den.
-<br></br><p align="center"><img src="assets/ListadiContactosM.png" width="200"><img src="assets/DetalleUsuarioM.png" width="200"></p>
+
+<p align="center">
+  <kbd hspace="20">
+   <img src="assets/ListadiContactosM.png" width="200" >
+  </kbd>
+  <kbd hspace="20">
+   <img src="assets/DetalleUsuarioM.png" width="200">
+  </kbd>
+</p>
+
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#explanation">Explanation</a>
+    </li>
+    <li>
+      <a href="#app-structure">App Structure</a>
+    <li>
+      <a href="#app-usage">App Usage</a>
+    </li>
+  </ol>      
+</details>
 
 ## Explanation
 The application consist of two screens, one shows a list of users and the other the detail of users.
@@ -36,3 +58,43 @@ The app is made using Kotlin and Jetpack Compose. It's structured the following 
    viewmodel which is located in "viewmodels".
   <br></br><p align="center"><img src="assets/middenTestScreenCapture1.PNG" width="200"></p>
 
+  ## App usage
+
+When you first open the app, the first screen you see it's "Contact List Screen" in which you can see all the users given by the API. In there, you can press the three dots icon in the top left of the screen, and you will open a dropdown menu in which you can press "Search" to open the Search bar and write a name or an email to search for a user. Given how the API it's implemented, you can only search for a user already in the list downloaded.
+From there, you can go to "User Info Screen" by pressing on a row of the list, a user, or a given result in the search.
+<p align="center">
+  <kbd hspace="20">
+   <img src="assets/middenTestScreenCapture4.jpeg" width="200" >
+  </kbd>
+  <kbd hspace="20">
+   <img src="assets/middenTestScreenCapture3.jpeg" width="200">
+  </kbd>
+ <kbd hspace="20">
+   <img src="assets/middenTestScreenCapture5.jpeg" width="200">
+  </kbd>
+</p>
+
+In  "User Info Screen" you can see more information about the user like their gender or their location. Given how Google Maps is implemented, it's using the location given by the API, not the actual street given by the user. Nevertheless, there is a marker with their address information, just not the actual coordinates.
+  <br></br>
+  <p align="center">
+   <kbd>
+   <img src="assets/middenTestScreenCapture2.jpeg" width="200">
+   </kbd>
+  </p>
+
+There is also a dark mode implemented, which appears at night if the phone has dark mode. 
+<br></br>
+<p align="center">
+ <kbd>
+ <img src="assets/middenTestScreenCapture6.jpeg" width="200">
+ </kbd>
+</p>
+
+If there isn't network connection or the API returns error, there is a screen for this case which can reload the information if pulled down.
+
+<br></br>
+<p align="center">
+ <kbd>
+ <img src="assets/middenTestScreenCapture7.jpeg" width="200">
+ </kbd>
+</p>
