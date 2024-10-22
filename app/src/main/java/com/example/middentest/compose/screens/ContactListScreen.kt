@@ -12,7 +12,7 @@ import com.example.middentest.data.models.UserInfo
 import com.example.middentest.ui.theme.MiddenTestTheme
 
 @Composable
-fun ContactList(
+fun ContactListScreen(
     userList: List<UserInfo>,
     paddingValues: PaddingValues,
     loadingState: LoadingState,
@@ -46,7 +46,7 @@ fun ContactList(
 private fun PrevMainScreen() {
     MiddenTestTheme {
         Surface {
-            ContactList(
+            ContactListScreen(
                 paddingValues = PaddingValues(),
                 userList = mutableListOf<UserInfo>(),
                 loadingState = LoadingState.LOADING,

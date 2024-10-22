@@ -156,7 +156,7 @@ fun UICompose(viewModel: MainViewModel) {
         ) {
             composable(route = MiddenTestScreens.ContactList.name) {
                 screen.value = MiddenTestScreens.ContactList
-                ContactList(
+                ContactListScreen(
                     paddingValues = innerPadding,
                     userList = userList.value,
                     loadingState = loadingState.value,
