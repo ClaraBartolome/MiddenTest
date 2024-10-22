@@ -30,5 +30,6 @@ The app is made using Kotlin and Jetpack Compose. It's structured the following 
 - In "network", you can find all the components related with the API
    connection using Retrofit. The API Service, the repository and the
    UseCase. You can find their respective tests in the test section of
-   the app. This part of the app communicates with the UI using a
-   viewmodel which is located in compose.
+   the app.
+- This part of the app communicates with the UI using a
+   viewmodel which is located in "viewmodels".
