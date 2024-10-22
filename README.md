@@ -58,7 +58,7 @@ The app is made using Kotlin and Jetpack Compose. It's structured the following 
    viewmodel which is located in "viewmodels".
   <br></br><p align="center"><img src="assets/middenTestScreenCapture1.PNG" width="200"></p>
 
-  ## App usage
+## App usage
 
 When you first open the app, the first screen you see it's "Contact List Screen" in which you can see all the users given by the API. In there, you can press the three dots icon in the top left of the screen, and you will open a dropdown menu in which you can press "Search" to open the Search bar and write a name or an email to search for a user. Given how the API it's implemented, you can only search for a user already in the list downloaded.
 From there, you can go to "User Info Screen" by pressing on a row of the list, a user, or a given result in the search.
