@@ -1,6 +1,7 @@
 package com.example.middentest.compose.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -60,37 +61,40 @@ fun SearchBar(
     onCloseClicked: () -> Unit
 ) {
     val expanded = remember { mutableStateOf(false) }
-    LazyColumn(modifier = Modifier.padding(top = 45.dp)) {
-        item {
-            SearchBarConfig(
-                text = text,
-                onTextChange = {
-                    onTextChange.invoke(it)
-                    expanded.value = true
-                },
-                onCloseClicked = onCloseClicked
-            )
-        }
-        item {
-            AnimatedVisibility(visible = expanded.value) {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    shape = RectangleShape,
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.background,
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
-                ) {
-                    LazyColumn(
-                        modifier = Modifier.heightIn(max = 150.dp),
+    Column(Modifier.wrapContentHeight().background(MaterialTheme.colorScheme.background)) {
+        Spacer(modifier = Modifier.height(45.dp).background(MaterialTheme.colorScheme.background))
+        LazyColumn(modifier = Modifier.wrapContentHeight(), verticalArrangement = Arrangement.Bottom) {
+            item {
+                SearchBarConfig(
+                    text = text,
+                    onTextChange = {
+                        onTextChange.invoke(it)
+                        expanded.value = true
+                    },
+                    onCloseClicked = onCloseClicked
+                )
+            }
+            item {
+                AnimatedVisibility(visible = expanded.value) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        shape = RectangleShape,
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.background,
+                        ),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
                     ) {
-                        items(onSearchInit.invoke(text.value)) { item ->
-                            ItemSearchSuggestion(
-                                userName = item.name.toString(),
-                                userEmail = item.email ?: "",
-                                onClick = onClickOnSearched
-                            )
+                        LazyColumn(
+                            modifier = Modifier.heightIn(max = 150.dp),
+                        ) {
+                            items(onSearchInit.invoke(text.value)) { item ->
+                                ItemSearchSuggestion(
+                                    userName = item.name.toString(),
+                                    userEmail = item.email ?: "",
+                                    onClick = onClickOnSearched
+                                )
+                            }
                         }
                     }
                 }
