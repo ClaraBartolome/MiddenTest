@@ -1,5 +1,6 @@
-# MiddenTest
+# <img align="left" src="assets/appIcon.svg" alt="image" width="45" height="45"/>MiddenTest
 This is a technical test for Mind Den.
+<br></br><p align="center"><img src="assets/ListadiContactosM.png" width="200"><img src="assets/DetalleUsuarioM.png" width="200"></p>
 
 ## Explanation
 The application consist of two screens, one shows a list of users and the other the detail of users.
@@ -33,3 +34,5 @@ The app is made using Kotlin and Jetpack Compose. It's structured the following 
    the app.
 - This part of the app communicates with the UI using a
    viewmodel which is located in "viewmodels".
+  <br></br><p align="center"><img src="assets/middenTestScreenCapture1.PNG" width="200"></p>
+
